@@ -1,0 +1,13 @@
+# Service configurations
+service:
+  time_start: "10:53"
+  time_end: "18:55"
+
+# Server configurations
+server:
+  host: "localhost"
+  port: 8080
+
+# Store credentials
+store:
+  dirpass: "data"
