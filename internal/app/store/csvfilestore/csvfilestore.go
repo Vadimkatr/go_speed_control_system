@@ -8,6 +8,7 @@ import (
 	"os"
 	"reflect"
 	"strconv"
+	"sync"
 	"time"
 
 	"github.com/vadimkatr/go_speed_control_system/internal/app/record"
@@ -16,6 +17,7 @@ import (
 
 var (
 	ErrNoRecords = errors.New("there are no records for this request")
+    mu sync.Mutex
 )
 
 type CSVFileStore struct {
@@ -23,6 +25,9 @@ type CSVFileStore struct {
 }
 
 func (s *CSVFileStore) SaveRecord(r *record.Record) (string, error) {
+	mu.Lock()
+	defer mu.Unlock()
+
 	file, err := os.OpenFile(
 		fmt.Sprintf("%s/%s.csv", s.Datapass, r.DateTime.Format(utils.SavedFileTimeFormat)),
 		os.O_CREATE|os.O_APPEND|os.O_WRONLY,
